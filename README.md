@@ -1,38 +1,26 @@
 # openpilot-installer-generator
-A PHP webpage that uses string replacements to generate a binary on the fly that you can enter at setup in NEOS.
+一个基于 PHP 的网页工具，通过字符串替换动态生成二进制文件，可直接在 Agnos 设置中使用。
 
-## What is this?
-Previously to install a custom fork from scratch, you would enter `https://openpilot.comma.ai` in the Custom Software prompt on your device, then `ssh` in later and clone the actual fork you want. Now you can enter a URL during set up to install any openpilot fork available on GitHub without first cloning stock.
+## 这是什么？
+以往安装自定义分支时，用户需要在设备的“自定义软件”选项中输入 `https://openpilot.comma.ai`，然后通过 `ssh` 克隆实际需要的分支。现在，您可以直接在设置阶段通过 URL 安装任何 GitHub 上的 openpilot 分支，而无需先克隆官方版本。
 
-## Usage
-The syntax is pretty simple, with up to 3 arguments you can pass the generator site: `https://smiskol.com/fork/[username]/{branch}/{loading_msg}`
+## 使用方法
+语法非常简单，最多可传递 3 个参数给生成器网站：`https://mouxan.cn/{分支}`
 
-Where `username` is the required username of the fork, `branch` is the branch to clone, and `loading_msg` is the text it displays when cloning the repo (`Installing {loading_msg}`). `branch` and `loading_msg` are optional.
+- `分支`：可选，表示要克隆的分支。
 
-- If `branch` is left blank (https://smiskol.com/fork/commaai), git will clone the default branch on GitHub.
-- If `loading_msg` is left blank, then the installer will display `Installing {username}` unless the fork has a custom loading message (check the index.php for aliases).
-- While `username` is required if you visit the website on your desktop, if you `wget` the site or enter just `/fork` during set up, it will install the release2 branch of stock openpilot.
+### 参数说明
+- 如果 `分支` 留空（如 `https://mouxan.cn/dp`），Git 将克隆 Gitee 上的默认分支。
 
-**Example:** https://smiskol.com/fork/sshane installs the Stock Additions fork.
+**示例：** `https://mouxan.cn/dp` 将安装 🐉 dragonpilot - 0.10.1 (推荐) 分支。
 
-The main `index.php` file looks at your user-agent to decide which installer to serve. If `NEOSSetup` is present in your user-agent, then the Android-based installer is served. If `AGNOSSetup` is present, then it serves the Ubuntu-based installer for the comma three.
+`index.php` 文件会根据用户代理（User-Agent）决定提供哪种安装器：
+- 如果用户代理包含 `AGNOSSetup`，则提供基于 Ubuntu 的安装器（适用于 comma three）。
 
-## Aliases
-Defined in the [index.php](fork/index.php) file, aliases allow for more quickly installing a fork with a long username.
+## 别名功能
+在 `index.php` 文件中定义的别名可以快速安装用户名较长的 fork。
 
-- To install [dragonpilot](https://github.com/dragonpilot-community/dragonpilot), you can simply use the following URL which uses the `devel-i18n` branch by default: https://smiskol.com/fork/dp
-- To install [Stock Additions](https://github.com/sshane/openpilot), my fork, enter the URL: https://smiskol.com/fork/shane
-- To install [stock openpilot](https://github.com/commaai/openpilot), enter the URL: https://smiskol.com/fork/commaai or just https://smiskol.com/fork
-
-If you are a fork developer, have a repository that is not named `openpilot`, and want to allow users to install with this tool, you can take advantage of GitHub's internal compatibility aliasing and just temporaily rename your fork to `openpilot` and rename it back. You can see an example of this in action with "https://github.com/dragonpilot-community/openpilot" redirecting to "https://github.com/dragonpilot-community/dragonpilot". 
-
-## Misc
-### Custom loading message without branch
-If you want to specify a custom loading message but use the default branch (not passing in a branch), you can pass an underscore for the branch. For example: https://smiskol.com/fork/shane/_/some%20additions%20or%20something
-
-### Source code to build the custom installer
-- [Source code for NEOS installer](/source/installer_source_neos.c)
-- [Source code for AGNOS installer](/source/installer_source_agnos.cc)
+- 安装 [dragonpilot](https://gitee.com/mouxangitee/openpilot/tree/dp) 时，可使用默认分支 `dp`：`https://mouxan.cn/dp`
 
 ---
-[Idea](https://discord.com/channels/469524606043160576/524594418628558878/827726757201051658) by [nelsonjchen](https://github.com/nelsonjchen) on the [comma.ai community Discord](https://discord.comma.ai/)!
+此工具由 [nelsonjchen](https://github.com/nelsonjchen) 在 [comma.ai 社区 Discord](https://discord.comma.ai/) 中提出！感谢 [sshane](https://github.com/sshane) 提供的项目脚本。
